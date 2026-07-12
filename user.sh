@@ -89,11 +89,11 @@ cp /home/ec2-user/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOG
 
 VALIDATE $? "copying mongodb repo"
 
-dnf install mongodb-org-shell -y &>> $LOGFILE
+dnf install mongodb-mongosh -y &>> $LOGFILE
 
 VALIDATE $? "Installing Mongodb client"
 
-mongo --host $MONGDB_HOST </app/schema/user.js &>> $LOGFILE
+mongosh --host $MONGDB_HOST </app/schema/user.js &>> $LOGFILE
 
 VALIDATE $? "Loading user data into Mongosh"
 
