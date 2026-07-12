@@ -85,7 +85,7 @@ systemctl start user &>> $LOGFILE
 
 VALIDATE $? "Starting user"
 
-cp /home/ec2-user/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo
+cp /home/ec2-user/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>> $LOGFILE
 
 VALIDATE $? "copying mongodb repo"
 
@@ -93,7 +93,7 @@ dnf install mongodb-org-shell -y &>> $LOGFILE
 
 VALIDATE $? "Installing Mongosh client"
 
-mongo --host $MONGDB_HOST </app/schema/user.js &>> $LOGFILE
+mongosh --host $MONGDB_HOST </app/schema/user.js &>> $LOGFILE
 
 VALIDATE $? "Loading user data into Mongosh"
 
