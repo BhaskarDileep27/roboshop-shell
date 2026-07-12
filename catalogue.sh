@@ -68,3 +68,16 @@ cd /app
 unzip -o /tmp/catalogue.zip  &>> $LOGFILE
 
 VALIDATE $? "unzipping catalogue"
+
+npm install  &>> $LOGFILE
+
+VALIDATE $? "Installing dependencies"
+
+# use absolute, because catalogue.service exists there
+cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>> $LOGFILE
+
+VALIDATE $? "Copying catalogue service file"
+
+systemctl daemon-reload &>> $LOGFILE
+
+VALIDATE $? "catalogue daemon reload"
