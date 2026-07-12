@@ -91,10 +91,10 @@ VALIDATE $? "copying mongodb repo"
 
 dnf install mongodb-org-shell -y &>> $LOGFILE
 
-VALIDATE $? "Installing MongoDB client"
+VALIDATE $? "Installing Mongosh client"
 
 mongo --host $MONGDB_HOST </app/schema/user.js &>> $LOGFILE
 
-VALIDATE $? "Loading user data into MongoDB"
+VALIDATE $? "Loading user data into Mongosh"
 
 
