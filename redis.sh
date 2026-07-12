@@ -30,7 +30,7 @@ else
     echo "You are root user"
 fi # fi means reverse of if, indicating condition end
 
-dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y &>> $LOGFILE
+dnf install https://rpms.remirepo.net/enterprise/remi-release-9.rpm -y &>> $LOGFILE
 
 VALIDATE $? "Installing Remi release"
 
