@@ -31,3 +31,33 @@ fi # fi means reverse of if, indicating condition end
 dnf module disable nodejs -y &>> $LOGFILE
 
 VALIDATE $? "Disabling current NodeJS"
+
+dnf module enable nodejs:18 -y &>> $LOGFILE
+
+VALIDATE $? "Enabling NodeJS 18"
+
+dnf install nodejs -y &>> $LOGFILE
+
+VALIDATE $? "Installing NodeJS 18"
+
+dnf install nodejs -y
+
+VALIDATE $? "Installing NodeJS 18"
+
+useradd roboshop $>>LOGFILE
+
+VALIDATE $? "Adding roboshop user"
+
+mkdir -p /app $>>LOGFILE
+
+VALIDATE $? "Creating /app directory"
+
+curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip  &>> $LOGFILE
+
+VALIDATE $? "Downloading catalogue.zip"
+
+cd /app 
+
+unzip -o /tmp/catalogue.zip  &>> $LOGFILE
+
+VALIDATE $? "unzipping catalogue"
