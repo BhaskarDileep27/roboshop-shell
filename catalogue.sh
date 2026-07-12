@@ -9,6 +9,7 @@ N="\e[0m"
 TIMESTAMP=$(date +%F-%H-%M-%S)
 
 LOGFILE="/tmp/$0-$TIMESTAMP.log"
+MONGDB_HOST=mongodb.dileep.sbs
 VALIDATE()
 {
     if [ $1 -ne 0 ]
@@ -81,3 +82,24 @@ VALIDATE $? "Copying catalogue service file"
 systemctl daemon-reload &>> $LOGFILE
 
 VALIDATE $? "catalogue daemon reload"
+
+
+systemctl enable catalogue &>> $LOGFILE
+
+VALIDATE $? "Enable catalogue"
+
+systemctl start catalogue &>> $LOGFILE
+
+VALIDATE $? "Starting catalogue"
+
+cp /home/ec2-user/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo
+
+VALIDATE $? "copying mongodb repo"
+
+dnf install mongodb-org-shell -y &>> $LOGFILE
+
+VALIDATE $? "Installing MongoDB client"
+
+mongo --host $MONGDB_HOST </app/schema/catalogue.js &>> $LOGFILE
+
+VALIDATE $? "Loading catalouge data into MongoDB"
