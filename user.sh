@@ -93,7 +93,7 @@ dnf install mongodb-org-shell -y &>> $LOGFILE
 
 VALIDATE $? "Installing Mongodb client"
 
-mongosh --host $MONGDB_HOST </app/schema/user.js &>> $LOGFILE
+mongo --host $MONGDB_HOST </app/schema/user.js &>> $LOGFILE
 
 VALIDATE $? "Loading user data into Mongosh"
 
