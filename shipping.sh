@@ -9,7 +9,7 @@ N="\e[0m"
 TIMESTAMP=$(date +%F-%H-%M-%S)
 LOGFILE="/tmp/$0-$TIMESTAMP.log"
 
-echo "script stareted executing at $TIMESTAMP" &>> $LOGFILE
+echo "script started executing at $TIMESTAMP" &>> $LOGFILE
 
 VALIDATE(){
     if [ $1 -ne 0 ]
@@ -24,14 +24,14 @@ VALIDATE(){
 if [ $ID -ne 0 ]
 then
     echo -e "$R ERROR:: Please run this script with root access $N"
-    exit 1 # you can give other than 0
+    exit 1 
 else
     echo "You are root user"
-fi # fi means reverse of if, indicating condition end
+fi 
 
 dnf install maven -y &>> $LOGFILE
 
-id roboshop #if roboshop user does not exist, then it is failure
+id roboshop 
 if [ $? -ne 0 ]
 then
     useradd roboshop
@@ -41,65 +41,48 @@ else
 fi
 
 mkdir -p /app
-
 VALIDATE $? "creating app directory"
 
 curl -L -o /tmp/shipping.zip https://roboshop-builds.s3.amazonaws.com/shipping.zip &>> $LOGFILE
-
 VALIDATE $? "Downloading shipping"
 
 cd /app
-
 VALIDATE $? "moving to app directory"
 
 unzip -o /tmp/shipping.zip &>> $LOGFILE
-
 VALIDATE $? "unzipping shipping"
 
 mvn clean package &>> $LOGFILE
-
 VALIDATE $? "Installing dependencies"
 
 mv target/shipping-1.0.jar shipping.jar &>> $LOGFILE
-
 VALIDATE $? "renaming jar file"
 
-sed -i 's|/home/centos/roboshop-shell/shipping.service|/home/ec2-user/roboshop-shell/shipping.service|g' shipping.sh 
-
+# Corrected copy command using ec2-user path
+cp /home/ec2-user/roboshop-shell/shipping.service /etc/systemd/system/shipping.service &>> $LOGFILE
 VALIDATE $? "copying shipping service"
 
 systemctl daemon-reload &>> $LOGFILE
-
-VALIDATE $? "deamon reload"
+VALIDATE $? "daemon reload"
 
 systemctl enable shipping  &>> $LOGFILE
-
 VALIDATE $? "enable shipping"
 
 systemctl start shipping &>> $LOGFILE
-
 VALIDATE $? "start shipping"
 
 dnf install mysql -y &>> $LOGFILE
-
 VALIDATE $? "install MySQL client"
 
+# Updated schema paths for the new source code structure
 mysql -h mysql.dileep.sbs -uroot -p'RoboShop@1' < /app/db/schema.sql &>> $LOGFILE
-
 VALIDATE $? "loading shipping schema"
 
 mysql -h mysql.dileep.sbs -uroot -p'RoboShop@1' < /app/db/app-user.sql &>> $LOGFILE
-
 VALIDATE $? "loading shipping app user"
 
 mysql -h mysql.dileep.sbs -uroot -p'RoboShop@1' < /app/db/master-data.sql &>> $LOGFILE
-
 VALIDATE $? "loading shipping master data"
 
-VALIDATE $? "loading shipping data"
-
 systemctl restart shipping &>> $LOGFILE
-
 VALIDATE $? "restart shipping"
-
-
