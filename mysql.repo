@@ -1,0 +1,6 @@
+[mysql84-lts-community]
+name=MySQL 8.4 LTS Community Server
+baseurl=http://repo.mysql.com/yum/mysql-8.4-lts-community/el/9/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=https://repo.mysql.com/RPM-GPG-KEY-mysql-2023
