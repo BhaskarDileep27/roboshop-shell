@@ -64,7 +64,7 @@ mv target/shipping-1.0.jar shipping.jar &>> $LOGFILE
 
 VALIDATE $? "renaming jar file"
 
-cp /home/ec2-user/roboshop-shell/shipping.service /etc/systemd/system/shipping.service &>> $LOGFILE
+cp /shipping.service /etc/systemd/system/shipping.service &>> $LOGFILE
 
 VALIDATE $? "copying shipping service"
 
@@ -84,7 +84,17 @@ dnf install mysql -y &>> $LOGFILE
 
 VALIDATE $? "install MySQL client"
 
-mysql -h mysql.dileep.sbs -uroot -pRoboShop@1 < /app/schema/shipping.sql &>> $LOGFILE
+mysql -h mysql.dileep.sbs -uroot -p'RoboShop@1' < /app/db/schema.sql &>> $LOGFILE
+
+VALIDATE $? "loading shipping schema"
+
+mysql -h mysql.dileep.sbs -uroot -p'RoboShop@1' < /app/db/app-user.sql &>> $LOGFILE
+
+VALIDATE $? "loading shipping app user"
+
+mysql -h mysql.dileep.sbs -uroot -p'RoboShop@1' < /app/db/master-data.sql &>> $LOGFILE
+
+VALIDATE $? "loading shipping master data"
 
 VALIDATE $? "loading shipping data"
 
