@@ -12,7 +12,7 @@ do
     then
         INSTANCE_TYPE="t3.small"
     else
-        INSTANCE_TYPE="t2.micro"
+        INSTANCE_TYPE="t3.micro"
     fi
 
     # FIX: Replaced the hardcoded SG ID with the $SG_ID variable
