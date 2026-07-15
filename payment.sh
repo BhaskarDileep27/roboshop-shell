@@ -55,7 +55,7 @@ unzip -o /tmp/payment.zip &>> $LOGFILE
 
 VALIDATE $? "unzipping payment"
 
-pip3.6 install -r requirements.txt &>> $LOGFILE
+pip3 install -r requirements.txt &>> $LOGFILE
 
 VALIDATE $? "Installing Dependencies"
 
