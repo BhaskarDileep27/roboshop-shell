@@ -2,8 +2,8 @@
 
 AMI=ami-0220d79f3f480ecf5 #this keeps on changing
 SG_ID=sg-0e75a9a19ca1ccce6 #replace with your SG ID
-INSTANCES=("mongodb" "catalogue" "redis" "user" "cart" "web" "mysql" "shipping"  "payment" "dispatch" )
-ZONE_ID=Z10151982EVZUHG3VSVN6 # replace your zone ID
+INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "web" "payment" "dispatch" "shipping")
+ZONE_ID=Z104317737D96UJVA7NEF # replace your zone ID
 DOMAIN_NAME="dileep.sbs"
 
 for i in "${INSTANCES[@]}"
@@ -12,11 +12,10 @@ do
     then
         INSTANCE_TYPE="t3.small"
     else
-        INSTANCE_TYPE="t3.micro"
+        INSTANCE_TYPE="t2.micro"
     fi
 
-    # FIX: Replaced the hardcoded SG ID with the $SG_ID variable
-    IP_ADDRESS=$(aws ec2 run-instances --image-id $AMI --instance-type $INSTANCE_TYPE --security-group-ids $SG_ID --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" --query 'Instances[0].PrivateIpAddress' --output text)
+    IP_ADDRESS=$(aws ec2 run-instances --image-id $AMI --instance-type $INSTANCE_TYPE --security-group-ids sg-087e7afb3a936fce7 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$i}]" --query 'Instances[0].PrivateIpAddress' --output text)
     echo "$i: $IP_ADDRESS"
 
     #create R53 record, make sure you delete existing record
@@ -32,9 +31,10 @@ do
             ,"Type"             : "A"
             ,"TTL"              : 1
             ,"ResourceRecords"  : [{
-              "Value"         : "'$IP_ADDRESS'"
+                "Value"         : "'$IP_ADDRESS'"
             }]
         }
         }]
     }
+        '
 done
