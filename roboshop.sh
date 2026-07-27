@@ -1,7 +1,7 @@
 #!/bin/bash
 
 AMI=ami-0220d79f3f480ecf5 #this keeps on changing
-SG_ID=sg-0e6ec916f064caed6 #replace with your SG ID
+SG_ID=sg-087e7afb3a936fce7 #replace with your SG ID
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "web")
 ZONE_ID=Z10151982EVZUHG3VSVN6 # replace your zone ID
 DOMAIN_NAME="dileep.sbs"
