@@ -34,4 +34,31 @@ do
         --output text)
 
     echo "$i: $IP_ADDRESS"
+
+    CHANGE_BATCH=$(cat <<EOF
+{
+  "Comment": "Creating Route53 record for $i",
+  "Changes": [
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "$i.$DOMAIN_NAME",
+        "Type": "A",
+        "TTL": 1,
+        "ResourceRecords": [
+          {
+            "Value": "$IP_ADDRESS"
+          }
+        ]
+      }
+    }
+  ]
+}
+EOF
+)
+
+    aws route53 change-resource-record-sets \
+        --hosted-zone-id "$ZONE_ID" \
+        --change-batch "$CHANGE_BATCH" >/dev/null
+
 done
