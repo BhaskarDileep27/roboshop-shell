@@ -5,7 +5,7 @@ AMI="ami-0220d79f3f480ecf5" # this keeps on changing
 SG_ID="sg-0e75a9a19ca1ccce6" # replace with your SG ID
 AWS_REGION="${AWS_REGION:-us-east-1}"
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "web")
-ZONE_ID="Z104317737D96UJVA7NEF" # replace your zone ID
+ZONE_ID="Z10151982EVZUHG3VSVN6" # replace your zone ID
 DOMAIN_NAME="dileep.sbs"
 
 if ! aws sts get-caller-identity >/dev/null 2>&1; then
